@@ -1,0 +1,81 @@
+[class*="col-"] {
+  height: 100px;
+  box-shadow: inset 0 0 0 1px grey;
+}
+
+*{
+  box-sizing: border-box;
+}
+
+@xs-end: 767px;
+@sm-start: (@xs-end + 1); //768
+@sm-end: 991px; // 768 - 991
+@md-start: (@sm-end + 1); //992
+@md-end: 1199px; // 992 - 1023
+@lg-start: (@md-end + 1); //1024
+
+@gutter: 15px;
+
+.container {
+  width: 100%;
+  max-width: 540px;
+  padding-left: @gutter;
+  padding-right: @gutter;
+  margin-left: auto;
+  margin-right: auto;
+  @media (min-width: @sm-start) {
+    max-width: 720px;
+  } 
+  @media (min-width: @md-start) {
+    max-width: 960px;
+  } 
+  @media (min-width: @lg-start) {
+    max-width: 1140px;
+  } 
+}
+.row {
+  margin-left: -(@gutter);
+  margin-right: -(@gutter);
+}
+[class*="col-xs-"],
+[class*="col-sm-"],
+[class*="col-md-"],
+[class*="col-lg-"] {
+  padding-left: @gutter;
+  padding-right: @gutter;
+  float: left;
+  min-height: 1px;
+  position: relative;
+}    
+
+.make-grid(@cols, @breakpoint, @i: 1) when (@i =< @cols) {
+  .col-@{breakpoint}-@{i} {
+    width: (@i * 100% / @cols);
+  }
+  .make-grid(@cols, @breakpoint, (@i + 1));
+  .col-@{breakpoint}-offset-@{i} {
+    left: (@i * 100% / @cols);
+  }
+  .col-@{breakpoint}-push-@{i} {
+    margin-left: (@i * 100% / @cols);
+  }
+  .col-@{breakpoint}-pull-@{i} {
+    margin-left: -(@i * 100% / @cols);
+  }
+}
+
+// for XS 
+.make-grid(12, xs);
+
+// for sm
+@media (min-width: @sm-start) {
+  .make-grid(12, sm);
+}
+// for md
+@media (min-width: @md-start) {
+  .make-grid(12, md);
+}
+// for lg
+@media (min-width: @lg-start) {
+  .make-grid(12, lg);
+}
